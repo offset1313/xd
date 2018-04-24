@@ -565,8 +565,10 @@ static int cpufreq_parse_governor(char *str_governor, unsigned int *policy,
 			 */
 			if (ret == 0)
 				t = __find_governor(str_governor);
+#ifdef CONFIG_CPU_FREQ_GOV_INTERACTIVE
 			else
 				t = __find_governor("interactive");
+#endif
 		}
 
 		if (t != NULL) {
