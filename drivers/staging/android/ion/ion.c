@@ -619,7 +619,7 @@ void ion_device_add_heap(struct ion_device *idev, struct ion_heap *heap)
 }
 
 int ion_walk_heaps(struct ion_client *client, int heap_id,
-		   enum ion_heap_type type, void *data,
+			unsigned int type, void *data,
 		   int (*f)(struct ion_heap *heap, void *data))
 {
 	struct ion_device *idev = client->idev;
