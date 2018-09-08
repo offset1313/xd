@@ -99,6 +99,3 @@ all.config
 
 # Object directory
 out/
-
-# fetched Android config fragments
-android/configs/android-*.cfg
