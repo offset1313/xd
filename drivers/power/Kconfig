@@ -636,6 +636,13 @@ config MSM_BCL_PERIPHERAL_CTL
 	  provides routines to configure and monitor the BCL
 	  PMIC peripheral.
 
+config FORCE_FAST_CHARGE
+        bool "Force power draw from normal charger to be 2500mA"
+        depends on QPNP_SMBCHARGER
+        help
+          Say Y here to enable normal charging to be run with 2500mA draw
+          rather than the normal 1500mA-1800mA range.
+
 source "drivers/power/reset/Kconfig"
 
 endif # POWER_SUPPLY
