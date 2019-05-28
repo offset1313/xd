@@ -37,7 +37,7 @@ typedef unsigned short col_type_t;
 
 #define MIN_BRIGHTNESS 2 /* Minimum display brightness */
 
-#define UPPER_BL_LVL 200 /* Upper target for brightness-dependent mode */
+#define UPPER_BL_LVL 400 /* Upper target for brightness-dependent mode */
 
 #define LOWER_BL_LVL 2 /* Lower target for brightness-dependent mode */
 
