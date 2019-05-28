@@ -9,11 +9,7 @@
 #include <linux/init.h>
 #include <linux/rtc.h>
 #include <linux/timer.h>
-#include <misc/klapse.h>
-
-MODULE_VERSION("5.0");
-MODULE_AUTHOR("tanish2k09");
-MODULE_LICENSE("GPLv2");
+#include <linux/klapse.h>
 
 /* Tunables */
 static unsigned short enabled = DEFAULT_ENABLE;
@@ -94,12 +90,12 @@ static void calc_active_minutes(void)
 static int get_minutes_since_start(void)
 {
 	int hour;
-	hour = tm.tm_hour - (start_minute % 60);
+	hour = tm.tm_hour - (start_minute / 60);
 
 	if (hour < 0)
 		hour += 24;
 
-	return hour * 60 + tm.tm_min;
+	return hour * 60 + tm.tm_min - (start_minute % 60);
 }
 
 static int get_minutes_before_stop(void)
@@ -213,7 +209,7 @@ static void set_timed_dimmer(void)
 	if (dimmer_auto == 1 &&
 		!mins_in_range(dimmer_start_minute,
 				dimmer_stop_minute,
-				tm.tm_hour + tm.tm_min))
+				tm.tm_hour * 60 + tm.tm_min))
 		dimmer = 10;
 	else
 		dimmer = b_cache;
@@ -233,7 +229,7 @@ static void pulse(unsigned long data)
 	if (enabled == 1) {
 		backtime = get_minutes_before_stop();
 
-		if(mins_in_range(start_minute, stop_minute, tm.tm_hour + tm.tm_min) == 0) {
+		if(!mins_in_range(start_minute, stop_minute, tm.tm_hour * 60 + tm.tm_min)) {
 			set_rgb_brightness(daytime_r,daytime_g,daytime_b);
 			if (!timer_pending(&pulse_timer))
 				restart_timer();
@@ -318,8 +314,10 @@ void set_rgb_slider(bl_type_t bl_lvl)
 static void set_enabled(unsigned short val)
 {
 	if ((val == 1) && (enabled != 1)) {
-		if (!dimmer_auto)
-			pulse(0);
+		flush_timer();
+		enabled = 1;
+		pulse(0);
+		return;
 	} else if (val == 0) {
 		set_rgb_brightness(daytime_r, daytime_g, daytime_b);
 		current_r = daytime_r;
@@ -605,3 +603,7 @@ static void __exit klapse_exit(void)
 
 module_init(klapse_init);
 module_exit(klapse_exit);
+
+MODULE_VERSION("5.0");
+MODULE_AUTHOR("tanish2k09");
+MODULE_LICENSE("GPLv2");
