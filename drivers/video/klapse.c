@@ -210,7 +210,7 @@ static void set_timed_dimmer(void)
 		!mins_in_range(dimmer_start_minute,
 				dimmer_stop_minute,
 				tm.tm_hour * 60 + tm.tm_min))
-		dimmer = 10;
+		dimmer = 100;
 	else
 		dimmer = b_cache;
 }
