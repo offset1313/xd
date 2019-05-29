@@ -569,23 +569,23 @@ static const struct kernel_param_ops freqs_param_ops = {
 };
 
 module_param_cb(enabled_mode, &enabled_param_ops, &enabled, 0644);
-module_param_cb(dimmer_factor, &dimmer_param_ops, &dimmer, 0644);
+module_param_cb(dimmer_factor, &dimmer_param_ops, &b_cache, 0644);
 module_param_cb(dimmer_factor_auto, &dimmer_auto_param_ops, &dimmer_auto, 0644);
+module_param_cb(dimmer_auto_start_minute, &dimmer_minutes_param_ops, &dimmer_start_minute, 0644);
+module_param_cb(dimmer_auto_stop_minute, &dimmer_minutes_param_ops, &dimmer_stop_minute, 0644);
 module_param_cb(daytime_r, &rgb_param_ops, &daytime_r, 0644);
 module_param_cb(daytime_g, &rgb_param_ops, &daytime_g, 0644);
 module_param_cb(daytime_b, &rgb_param_ops, &daytime_b, 0644);
 module_param_cb(target_r, &rgb_param_ops, &target_r, 0644);
 module_param_cb(target_g, &rgb_param_ops, &target_g, 0644);
 module_param_cb(target_b, &rgb_param_ops, &target_b, 0644);
-module_param_cb(target_minutes, &transition_param_ops, &target_minute, 0644);
-module_param_cb(fadeback_minutes, &transition_param_ops, &fadeback_min, 0644);
 module_param_cb(start_minute, &time_minutes_param_ops, &start_minute, 0644);
 module_param_cb(stop_minute, &time_minutes_param_ops, &stop_minute, 0644);
-module_param_cb(dimmer_auto_start_minute, &dimmer_minutes_param_ops, &dimmer_start_minute, 0644);
-module_param_cb(dimmer_auto_stop_minute, &dimmer_minutes_param_ops, &dimmer_stop_minute, 0644);
+module_param_cb(target_minutes, &transition_param_ops, &target_minute, 0644);
+module_param_cb(fadeback_minutes, &transition_param_ops, &fadeback_min, 0644);
+module_param_cb(pulse_freq, &freqs_param_ops, &pulse_freq, 0644);
 module_param_cb(bl_range_upper, &bl_range_param_ops, &bl_upper, 0644);
 module_param_cb(bl_range_lower, &bl_range_param_ops, &bl_lower, 0644);
-module_param_cb(pulse_freq, &freqs_param_ops, &pulse_freq, 0644);
 module_param_cb(flow_freq, &freqs_param_ops, &flow_freq, 0644);
 
 static int __init klapse_init(void)
