@@ -17,19 +17,19 @@ static unsigned short daytime_r = MAX_SCALE;
 static unsigned short daytime_g = MAX_SCALE;
 static unsigned short daytime_b = MAX_SCALE;
 static unsigned short target_r = MAX_SCALE;
-static unsigned short target_g = MAX_SCALE * 79 / 100;
-static unsigned short target_b = MAX_SCALE * 59 / 100;
-static unsigned int start_minute = 1050;
-static unsigned int stop_minute = 450;
+static unsigned short target_g = MAX_SCALE * 69 / 100;
+static unsigned short target_b = MAX_SCALE * 43 / 100;
+static unsigned int start_minute = 1080;
+static unsigned int stop_minute = 360;
 static unsigned short b_cache = 100;
-static unsigned short dimmer = 100;
+static unsigned short dimmer = 90;
 static unsigned int bl_lower = LOWER_BL_LVL;
 static unsigned int bl_upper = UPPER_BL_LVL;
-static unsigned int pulse_freq = 30000;
+static unsigned int pulse_freq = 124000;
 static int fadeback_min = 90;
 static int target_minute = 300;
 static bool dimmer_auto;
-static unsigned int dimmer_start_minute = 1380;
+static unsigned int dimmer_start_minute = 60;
 static unsigned int dimmer_stop_minute = 360;
 
 /* Core */
