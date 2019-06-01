@@ -314,11 +314,13 @@ void set_rgb_slider(bl_type_t bl_lvl)
 static void set_enabled(unsigned short val)
 {
 	if ((val == 1) && (enabled != 1)) {
+		flush_flow_timer();
 		flush_timer();
 		enabled = 1;
 		pulse(0);
 		return;
 	} else if (val == 0) {
+		flush_flow_timer();
 		set_rgb_brightness(daytime_r, daytime_g, daytime_b);
 		current_r = daytime_r;
 		current_g = daytime_g;
