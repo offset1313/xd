@@ -57,12 +57,7 @@ config LT8912
 	To compile this driver as a module, choose M here: the
 	module will be called LT8912.
 
-
-config KLAPSE
-    bool CONFIG_KLAPSE
-    default n
-    help
-        A simple rgb dynamic lapsing module similar to LineageOS' livedisplay
+source "drivers/video/klapse/Kconfig"
 
 if VT
 	source "drivers/video/console/Kconfig"
