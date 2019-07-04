@@ -57,8 +57,6 @@ config LT8912
 	To compile this driver as a module, choose M here: the
 	module will be called LT8912.
 
-source "drivers/video/klapse/Kconfig"
-
 if VT
 	source "drivers/video/console/Kconfig"
 endif
