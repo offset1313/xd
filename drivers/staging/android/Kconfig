@@ -151,7 +151,7 @@ source "drivers/staging/android/ion/Kconfig"
 
 config ANDROID_SIMPLE_LMK
 	bool "Simple Android Low Memory Killer"
-	depends on !ANDROID_LOW_MEMORY_KILLER && !MEMCG
+	depends on !MEMCG
 	---help---
 	  This is a complete low memory killer solution for Android that is
 	  small and simple. Processes are killed according to the priorities
@@ -187,7 +187,7 @@ config ANDROID_SIMPLE_LMK_AGGRESSION
 config ANDROID_SIMPLE_LMK_MINFREE
 	int "Minimum MiB of memory to free per reclaim"
 	range 8 512
-	default 128
+	default 96
 	help
 	  Simple LMK will try to free at least this much memory per reclaim.
 
