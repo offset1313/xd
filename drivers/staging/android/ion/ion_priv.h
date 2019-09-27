@@ -31,6 +31,7 @@
 #include <linux/shrinker.h>
 #include <linux/types.h>
 #include <linux/device.h>
+#include <linux/msm_dma_iommu_mapping.h>
 #ifdef CONFIG_ION_POOL_CACHE_POLICY
 #include <asm/cacheflush.h>
 #endif
@@ -94,6 +95,7 @@ struct ion_buffer {
 	int handle_count;
 	char task_comm[TASK_COMM_LEN];
 	pid_t pid;
+	struct msm_iommu_data iommu_data;
 };
 void ion_buffer_destroy(struct ion_buffer *buffer);
 
