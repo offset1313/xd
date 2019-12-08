@@ -1297,15 +1297,7 @@ static int proc_do_submiturb(struct usb_dev_state *ps, struct usbdevfs_urb *uurb
 				USBDEVFS_URB_BULK_CONTINUATION |
 				USBDEVFS_URB_NO_FSBR |
 				USBDEVFS_URB_ZERO_PACKET |
-				USBDEVFS_URB_NO_INTERRUPT;
-	/* USBDEVFS_URB_ISO_ASAP is a special case */
-	if (uurb->type == USBDEVFS_URB_TYPE_ISO)
-		mask |= USBDEVFS_URB_ISO_ASAP;
-
-	if (uurb->flags & ~mask)
-			return -EINVAL;
-
-	if ((unsigned int)uurb->buffer_length >= USBFS_XFER_MAX)
+				USBDEVFS_URB_NO_INTERRUPT))
 		return -EINVAL;
 	if (uurb->buffer_length > 0 && !uurb->buffer)
 		return -EINVAL;
@@ -1355,8 +1347,6 @@ static int proc_do_submiturb(struct usb_dev_state *ps, struct usbdevfs_urb *uurb
 			is_in = 0;
 			uurb->endpoint &= ~USB_DIR_IN;
 		}
-		if (is_in)
-			allow_short = true;
 		snoop(&ps->dev->dev, "control urb: bRequestType=%02x "
 			"bRequest=%02x wValue=%04x "
 			"wIndex=%04x wLength=%04x\n",
