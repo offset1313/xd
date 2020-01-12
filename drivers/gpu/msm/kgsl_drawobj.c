@@ -180,7 +180,7 @@ static bool drawobj_sync_expire(struct kgsl_device *device,
 	 * Clear the event from the pending mask - if it is already clear, then
 	 * leave without doing anything useful
 	 */
-	if (!test_and_clear_bit(event->id, &event->syncobj->pending))
+	if (!test_and_clear_bit(event->id, &syncobj->pending))
 		return false;
 
 	/*
@@ -217,7 +217,7 @@ static void drawobj_sync_func(struct kgsl_device *device,
 	if (drawobj_sync_expire(device, event))
 		kgsl_context_put(event->context);
 
-	drawobj_put(event->drawobj);
+	drawobj_put(&event->syncobj->base);
 }
 
 static inline void memobj_list_free(struct list_head *list)
@@ -251,7 +251,7 @@ static void drawobj_destroy_sync(struct kgsl_drawobj *drawobj)
 		 * If this thread clears the pending bit mask then it is
 		 * responsible for doing context put.
 		 */
-		if (!test_and_clear_bit(i, &cmdbatch->pending))
+		if (!test_and_clear_bit(i, &syncobj->pending))
 			continue;
 
 		switch (event->type) {
@@ -285,7 +285,7 @@ static void drawobj_destroy_sync(struct kgsl_drawobj *drawobj)
 	 * If we cancelled an event, there's a good chance that the context is
 	 * on a dispatcher queue, so schedule to get it removed.
 	 */
-	if (!bitmap_empty(&cmdbatch->pending, KGSL_MAX_SYNCPOINTS) &&
+	if (!bitmap_empty(&syncobj->pending, KGSL_MAX_SYNCPOINTS) &&
 		drawobj->device->ftbl->drawctxt_sched)
 		drawobj->device->ftbl->drawctxt_sched(drawobj->device,
 							drawobj->context);
@@ -594,13 +594,28 @@ static void add_profiling_buffer(struct kgsl_device *device,
 		return;
 	}
 
-	cmdobj->profiling_buf_entry = entry;
+	if (!id) {
+		cmdobj->profiling_buffer_gpuaddr = gpuaddr;
+	} else {
+		u64 off =
+			offset + sizeof(struct kgsl_drawobj_profiling_buffer);
 
-	if (id != 0)
+		/*
+		 * Make sure there is enough room in the object to store the
+		 * entire profiling buffer object
+		 */
+		if (off < offset || off >= entry->memdesc.size) {
+			dev_err(device->dev,
+				"ignore invalid profile offset ctxt %d id %d offset %lld gpuaddr %llx size %lld\n",
+			drawobj->context->id, id, offset, gpuaddr, size);
+			kgsl_mem_entry_put(entry);
+			return;
+		}
+
 		cmdobj->profiling_buffer_gpuaddr =
 			entry->memdesc.gpuaddr + offset;
-	else
-		cmdobj->profiling_buffer_gpuaddr = gpuaddr;
+	}
+	cmdobj->profiling_buf_entry = entry;
 }
 
 /**
