@@ -537,7 +537,7 @@ static void sync_fence_signal_pt(struct sync_pt *pt)
 
 bool sync_fence_signaled(struct sync_fence *fence)
 {
-	return atomic_read(&fence->status) <= 0;
+	return (&fence->status) <= 0;
 }
 EXPORT_SYMBOL(sync_fence_signaled);
 
