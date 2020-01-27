@@ -101,7 +101,7 @@ static struct wcd_mbhc_config mbhc_cfg = {
 	.swap_gnd_mic = NULL,
 	.hs_ext_micbias = false,
 	.key_code[0] = KEY_MEDIA,
-#if (defined CONFIG_MACH_XIAOMI_MIDO)
+#ifdef CONFIG_MACH_XIAOMI_MIDO
 	.key_code[1] = BTN_1,
 	.key_code[2] = BTN_2,
 	.key_code[3] = 0,
@@ -2470,7 +2470,7 @@ static struct snd_soc_dai_link msm8952_dai[] = {
 		.ignore_suspend = 1,
 		.ignore_pmdown_time = 1,
 		.be_id = MSM_FRONTEND_DAI_MULTIMEDIA29,
-	},
+        },
 	/* Backend I2S DAI Links */
 	{
 		.name = LPASS_BE_PRI_MI2S_RX,

@@ -276,7 +276,7 @@ static int mdss_dsi_regulator_init(struct platform_device *pdev,
 	return rc;
 }
 
-static int mdss_dsi_panel_power_off(struct mdss_panel_data *pdata)
+int mdss_dsi_panel_power_off(struct mdss_panel_data *pdata)
 {
 	int ret = 0;
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata = NULL;
@@ -300,14 +300,14 @@ static int mdss_dsi_panel_power_off(struct mdss_panel_data *pdata)
 		pr_debug("reset disable: pinctrl not enabled\n");
 
 #ifdef CONFIG_MACH_XIAOMI_MIDO
-	if (2 == panel_suspend_reset_flag)
-		msleep(1); //dealy 2ms
+	if (panel_suspend_reset_flag == 2)
+		msleep(1); //delay 2ms
 
-	if (3 == panel_suspend_reset_flag)
+	if (panel_suspend_reset_flag == 3)
 		msleep(4); //delay 4ms
 #endif
 
-	ret = msm_dss_enable_vreg(
+	ret = msm_dss_enable_vreg (
 		ctrl_pdata->panel_power_data.vreg_config,
 		ctrl_pdata->panel_power_data.num_vreg, 0);
 	if (ret)
@@ -330,7 +330,7 @@ static int mdss_dsi_panel_power_on(struct mdss_panel_data *pdata)
 	ctrl_pdata = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);
 
-	ret = msm_dss_enable_vreg(
+	ret = msm_dss_enable_vreg (
 		ctrl_pdata->panel_power_data.vreg_config,
 		ctrl_pdata->panel_power_data.num_vreg, 1);
 	if (ret) {
@@ -2969,16 +2969,16 @@ static struct device_node *mdss_dsi_find_panel_of_node(
 		}
 		pr_info("%s: cmdline:%s panel_name:%s\n",
 			__func__, panel_cfg, panel_name);
-		if (!strcmp(panel_name, NONE_PANEL))
-			goto exit;
 
 #ifdef CONFIG_MACH_XIAOMI_MIDO
 		if (!strcmp(panel_name, "qcom,mdss_dsi_otm1911_fhd_video"))
 			panel_suspend_reset_flag = 2;
-
-		if (!strcmp(panel_name, "qcom,mdss_dsi_ili9885_boe_fhd_video"))
+		else if (!strcmp(panel_name, "qcom,mdss_dsi_ili9885_boe_fhd_video"))
 			panel_suspend_reset_flag = 3;
+		else
 #endif
+		if (!strcmp(panel_name, NONE_PANEL))
+			goto exit;
 
 		mdss_node = of_parse_phandle(pdev->dev.of_node,
 			"qcom,mdss-mdp", 0);
@@ -4214,7 +4214,7 @@ int init_te_irq(struct mdss_dsi_ctrl_pdata *ctrl_pdata)
 		 pr_err("%s:liujia irq gpio not provided\n", __func__);
 		 return rc ;
 	}
-		return 0;
+	return 0;
 }
 #endif
 

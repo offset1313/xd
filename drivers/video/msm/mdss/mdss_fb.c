@@ -127,6 +127,7 @@ static int mdss_fb_send_panel_event(struct msm_fb_data_type *mfd,
 					int event, void *arg);
 static void mdss_fb_set_mdp_sync_pt_threshold(struct msm_fb_data_type *mfd,
 		int type);
+
 void mdss_fb_no_update_notify_timer_cb(unsigned long data)
 {
 	struct msm_fb_data_type *mfd = (struct msm_fb_data_type *)data;
@@ -1613,6 +1614,7 @@ static int mdss_fb_resume(struct platform_device *pdev)
 #endif
 
 #ifdef CONFIG_PM_SLEEP
+
 static int mdss_fb_pm_suspend(struct device *dev)
 {
 	struct msm_fb_data_type *mfd = dev_get_drvdata(dev);
@@ -2781,7 +2783,6 @@ static int mdss_fb_register(struct msm_fb_data_type *mfd)
 	mdss_panel_debugfs_init(panel_info, panel_name);
 	pr_info("FrameBuffer[%d] %dx%d registered successfully!\n", mfd->index,
 					fbi->var.xres, fbi->var.yres);
-
 	return 0;
 }
 
@@ -5184,7 +5185,6 @@ void mdss_fb_report_panel_dead(struct msm_fb_data_type *mfd)
 		KOBJ_CHANGE, envp);
 	pr_err("Panel has gone bad, sending uevent - %s\n", envp[0]);
 }
-
 
 /*
  * mdss_fb_calc_fps() - Calculates fps value.
