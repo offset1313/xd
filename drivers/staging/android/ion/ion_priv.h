@@ -44,6 +44,7 @@ struct ion_handle {
 	atomic_t refcount;
 	int id;
 };
+
 /**
  * struct ion_heap_ops - ops to operate on a given heap
  * @allocate:		allocate memory
