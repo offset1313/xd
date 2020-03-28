@@ -25,7 +25,7 @@
 #include <linux/input.h>
 #include <linux/firmware.h>
 #include <linux/completion.h>
-#ifdef CONFIG_MACH_XIAOMI_MIDO
+#if (defined CONFIG_MACH_XIAOMI_MIDO)
 #include <linux/switch.h>
 #endif
 #include <sound/soc.h>
@@ -45,7 +45,7 @@
 #define OCP_ATTEMPT 1
 #define HS_DETECT_PLUG_TIME_MS (3 * 1000)
 #define SPECIAL_HS_DETECT_TIME_MS (2 * 1000)
-#ifdef CONFIG_MACH_XIAOMI_MIDO
+#if (defined CONFIG_MACH_XIAOMI_MIDO)
 #define MBHC_BUTTON_PRESS_THRESHOLD_MIN 750
 #else
 #define MBHC_BUTTON_PRESS_THRESHOLD_MIN 250
@@ -84,19 +84,18 @@ enum wcd_mbhc_cs_mb_en_flag {
 	WCD_MBHC_EN_NONE,
 };
 
-#ifdef CONFIG_MACH_XIAOMI_MIDO
+#if (defined CONFIG_MACH_XIAOMI_MIDO)
 static struct switch_dev accdet_data;
 #endif
 
 static void wcd_mbhc_jack_report(struct wcd_mbhc *mbhc,
 				struct snd_soc_jack *jack, int status, int mask)
 {
-#ifdef CONFIG_MACH_XIAOMI_MIDO
-	if (jack->jack->type & WCD_MBHC_JACK_MASK) {
-		if (!status)
-			switch_set_state(&accdet_data, 0);
-		else
-			switch_set_state(&accdet_data, status);
+#if (defined CONFIG_MACH_XIAOMI_MIDO)
+	if (!status && (jack->jack->type&WCD_MBHC_JACK_MASK)) {
+		switch_set_state(&accdet_data, 0);
+	} else if (jack->jack->type&WCD_MBHC_JACK_MASK) {
+		switch_set_state(&accdet_data, status);
 	}
 #endif
 	snd_soc_jack_report(jack, status, mask);
@@ -368,7 +367,7 @@ out_micb_en:
 
 		/* configure cap settings properly when micbias is disabled */
 		if (mbhc->mbhc_cb->set_cap_mode)
-				mbhc->mbhc_cb->set_cap_mode(codec, micbias1, false);
+			mbhc->mbhc_cb->set_cap_mode(codec, micbias1, false);
 		break;
 	case WCD_EVENT_PRE_HPHL_PA_OFF:
 		mutex_lock(&mbhc->hphl_pa_lock);
@@ -868,10 +867,8 @@ static void wcd_mbhc_find_plug_and_report(struct wcd_mbhc *mbhc,
 				wcd_mbhc_report_plug(mbhc, 0,
 						SND_JACK_HEADPHONE);
 			if (mbhc->current_plug == MBHC_PLUG_TYPE_HEADSET)
-				wcd_mbhc_report_plug(mbhc, 0,
-						SND_JACK_HEADSET);
-		wcd_mbhc_report_plug(mbhc, 1,
-				SND_JACK_UNSUPPORTED);
+				wcd_mbhc_report_plug(mbhc, 0, SND_JACK_HEADSET);
+		wcd_mbhc_report_plug(mbhc, 1, SND_JACK_UNSUPPORTED);
 	} else if (plug_type == MBHC_PLUG_TYPE_HEADSET) {
 		if (mbhc->mbhc_cfg->enable_anc_mic_detect)
 			anc_mic_found = wcd_mbhc_detect_anc_plug_type(mbhc);
@@ -2673,7 +2670,7 @@ err_mbhc_sw_irq:
 		mbhc->mbhc_cb->register_notifier(codec, &mbhc->nblock, false);
 	mutex_destroy(&mbhc->codec_resource_lock);
 err:
-#ifdef CONFIG_MACH_XIAOMI_MIDO
+#if (defined CONFIG_MACH_XIAOMI_MIDO)
 	switch_dev_unregister(&accdet_data);
 #endif
 	pr_debug("%s: leave ret %d\n", __func__, ret);
@@ -2697,7 +2694,7 @@ void wcd_mbhc_deinit(struct wcd_mbhc *mbhc)
 	if (mbhc->mbhc_cb && mbhc->mbhc_cb->register_notifier)
 		mbhc->mbhc_cb->register_notifier(codec, &mbhc->nblock, false);
 	mutex_destroy(&mbhc->codec_resource_lock);
-#ifdef CONFIG_MACH_XIAOMI_MIDO
+#if (defined CONFIG_MACH_XIAOMI_MIDO)
 	switch_dev_unregister(&accdet_data);
 #endif
 }
