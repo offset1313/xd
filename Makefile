@@ -395,7 +395,7 @@ KBUILD_CFLAGS   := -mcpu=cortex-a53+crc+crypto -Wall -Wundef -Wstrict-prototypes
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -std=gnu89 $(call cc-option,-fno-PIE) \
-		   -fshort_wchar -mtune=cortex-a53
+		   -fshort-wchar -mtune=cortex-a53
 
 
 KBUILD_AFLAGS_KERNEL :=
