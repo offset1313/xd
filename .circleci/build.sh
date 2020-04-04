@@ -1,21 +1,39 @@
 #!/usr/bin/env bash
 
+TC=1
+
 cd /
-git clone --depth 1 https://github.com/offset1313/Toolchains  -b linaro proton
 git clone --depth 1 https://github.com/offset1313/Dess wahoo
 git clone --depth 1 git://github.com/CurioussX13/AnyKernel3 -b mido ak3
 
-DTBI=/wahoo/out/arch/arm64/boot/Image.gz-dtb
+IMG=/wahoo/out/arch/arm64/boot/Image.gz-dtb
 BID=$(openssl enc -base64 -d <<< OTk0MzkyMzY3OkFBRk9ZUS04aXZKUklLQTR2MEJQTGJuV3B0M1hWejNJSXFz )
 GID=$(openssl enc -base64 -d <<< LTEwMDEzMTM2MDAxMDY= )
-TANGO=$(date +"%F-%S")
-
-
+BDT=$(date +"%h-%m-%s")
 export ARCH=arm64
-export CROSS_COMPILE=/proton/bin/aarch64-linux-gnu-
-#CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
-		
+if [ "$TC" == "0" ] ;
+	then 
+		git clone --depth 1 https://github.com/offset1313/gcc  -b linaro gcc
+		export CROSS_COMPILE=/gcc/bin/aarch64-linux-gnu-
+		#CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+
+elif [ "$TC" == "1" ] ;
+    then
+        git clone --depth 1 https://github.com/offset1313/clang  -b master pclang
+        export CLANG_PATH=/pclang/bin
+        export PATH=${CLANG_PATH}:${PATH}
+        export LD_LIBRARY_PATH="/pclang/bin/../lib:$PATH"
+
+elif [ "$TC" == "2" ] ;
+    then
+        TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+        git clone --depth 1 https://github.com/offset1313/clang -b clang11 pclang
+        export CLANG_PATH=/pclang/bin
+        export PATH=${CLANG_PATH}:${PATH}
+        export LD_LIBRARY_PATH="/pclang/bin/../lib:$PATH"
+fi
+
 function sendInfo() 
 {
  curl -s -X POST https://api.telegram.org/bot"$BID"/sendMessage -d chat_id="$GID" -d "parse_mode=HTML" -d text="$(
@@ -39,15 +57,15 @@ function sendZip()
 
 function zipper()
 {
- cp ${DTBI} /ak3
+ cp "${DTBI}" /ak3
  cd /ak3 || exit 
  make -j16
- mv Thy-Kernel.zip Thy-K-"${TANGO}".zip
+ mv Thy-Kernel.zip Thy-"${BDT}".zip
 }
 function success() 
 {
  sendInfo "<b>Commit: </b><code>$(git --no-pager log --pretty=format:'"%h - %s (%an)"' -1)</code>" \
-          "<b>Compile Time: </b><code>$(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s)</code>" \
+          "<b>Compile Time: </b><code>$((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)</code>" \
           "<b>Toolchain: </b><code>${TOOL_VERSION}</code>" \
           "<b>proJTHy Success</b>"
  sendLog
@@ -57,29 +75,47 @@ function failed()
 {
  sendInfo "<b>Commit:</b><code>$(git --no-pager log --pretty=format:'"%h - %s (%an)"' -1)</code>" \
           "<b>ProJThy Failed</b>" \
-          "<b>Total Time Elapsed: </b><code>$(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds.</code>"
+          "<b>Total Time Elapsed: </b><code>$((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds.</code>"
  sendLog
  exit 1;
  }
 
-
 function compile() 
 {
 
-  cd /wahoo || exit
-  START=$(date +"%s")
-  make ARCH=arm64 mido_defconfig O=out 
-  make O=out -j16 &> /build.log 
-  
-			
-  if ! [ -a $DTBI ]; then																		
-   END=$(date +"%s")
-   DIFF=$(($END - $START))
-   failed
-  fi
+if [ "$TC" == "0" ] ;
+	then
+		cd /wahoo || exit
+		START=$(date +"%s")
+		make ARCH=arm64 mido_defconfig O=out 
+		make O=out -j16 &> /build.log 
 
+fi
+
+if [ "$TC" == "1" ] || [ "$TC" == "2" ] ;
+	then 
+		cd /wahoo || exit
+		START=$(date +"%s")
+		make ARCH=arm64 mido_defconfig O=out 
+		PATH="/pclang/bin/:${PATH}" \
+		make O=out -j16 &> /build.log \
+			CC=clang \
+			CLANG_TRIPLE=aarch64-linux-gnu- \
+			CROSS_COMPILE=aarch64-linux-gnu- \
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+		
+
+fi
+
+if ! [ -a "$IMG" ] ; 
+then																		
+   END=$(date +"%s")
+   DIFF=$((END - START))
+   failed  
+
+fi
   END=$(date +"%s")
-  DIFF=$(($END - $START))
+  DIFF=$((END - START))
   success
   zipper
   sendZip
