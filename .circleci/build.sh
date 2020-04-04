@@ -1,30 +1,42 @@
 #!/usr/bin/env bash
 
+# Toolchains
+    # 0 = linaro gcc
+    # 1 = clang 10
+    # 2 = clang 11
+    
+# Compiler switch
 TC=1
 
 cd /
+
+#Fetch sources
 git clone --depth 1 https://github.com/offset1313/Dess wahoo
 git clone --depth 1 git://github.com/CurioussX13/AnyKernel3 -b mido ak3
 
+# Set Build Env
 IMG=/wahoo/out/arch/arm64/boot/Image.gz-dtb
 BID=$(openssl enc -base64 -d <<< OTk0MzkyMzY3OkFBRk9ZUS04aXZKUklLQTR2MEJQTGJuV3B0M1hWejNJSXFz )
 GID=$(openssl enc -base64 -d <<< LTEwMDEzMTM2MDAxMDY= )
 BDT=$(date +"%h-%m-%s")
 export ARCH=arm64
-
+#Gcc
 if [ "$TC" == "0" ] ;
 	then 
 		git clone --depth 1 https://github.com/offset1313/gcc  -b linaro gcc
 		export CROSS_COMPILE=/gcc/bin/aarch64-linux-gnu-
-		#CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-
+		#CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
+		
+#Clang 10
 elif [ "$TC" == "1" ] ;
     then
+        TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
         git clone --depth 1 https://github.com/offset1313/clang  -b master pclang
         export CLANG_PATH=/pclang/bin
         export PATH=${CLANG_PATH}:${PATH}
         export LD_LIBRARY_PATH="/pclang/bin/../lib:$PATH"
-
+        
+#Clang 11
 elif [ "$TC" == "2" ] ;
     then
         TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
@@ -57,7 +69,7 @@ function sendZip()
 
 function zipper()
 {
- cp "${DTBI}" /ak3
+ cp "${IMG}" /ak3
  cd /ak3 || exit 
  make -j16
  mv Thy-Kernel.zip Thy-"${BDT}".zip
