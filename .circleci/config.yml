@@ -16,7 +16,7 @@ jobs:
 
            apt -y update && apt -y install bc build-essential zip curl git wget python
 
-           wget -O build.sh https://raw.githubusercontent.com/offset1313/mido/pie/.circleci/build.sh
+           wget -O build.sh https://raw.githubusercontent.com/offset1313/Dess/Q2/.circleci/build.sh
 
            chmod a+x build.sh
 
