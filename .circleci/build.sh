@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd /
-git clone --depth 1 https://github.com/offset1313/Toolchains  -b master proton
+git clone --depth 1 https://github.com/offset1313/Toolchains  -b linaro proton
 git clone --depth 1 https://github.com/offset1313/Dess wahoo
 git clone --depth 1 git://github.com/CurioussX13/AnyKernel3 -b mido ak3
 
@@ -12,7 +12,7 @@ TANGO=$(date +"%F-%S")
 
 
 export ARCH=arm64
-export CROSS_COMPILE=/proton/bin/aarch64-none-elf-
+export CROSS_COMPILE=/proton/bin/aarch64-linux-gnu-
 #CROSS_COMPILE_ARM32=arm-linux-gnueabi-
 
 		
