@@ -23,6 +23,7 @@ export ARCH=arm64
 #Gcc
 if [ "$TC" == "0" ] ;
 	then 
+	    TOOL_VERSION=$(wahoo/out/include/generated/compile.h | grep LINUX_COMPILER | cut -d '"' -f2)
 		git clone --depth 1 https://github.com/offset1313/gcc  -b linaro gcc
 		export CROSS_COMPILE=/gcc/bin/aarch64-linux-gnu-
 		#CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
@@ -78,7 +79,7 @@ function success()
 {
  sendInfo "<b>Commit: </b><code>$(git --no-pager log --pretty=format:'"%h - %s (%an)"' -1)</code>" \
           "<b>Compile Time: </b><code>$((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)</code>" \
-          "<b>Toolchain: </b><code>${TOOL_VERSION}</code>" \
+          "<b>Toolchain:</b><code>${TOOL_VERSION}</code>" \
           "<b>proJTHy Success</b>"
  sendLog
 }
