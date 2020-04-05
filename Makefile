@@ -645,6 +645,8 @@ KBUILD_CFLAGS	+= $(call cc-option,-Oz,-Os)
 else
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS	+= -O3 $(call cc-option,-fsanitize=local-init) -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53
+KBUILD_CFLAGS += $(call cc-disable-warning, void-pointer-to-enum-cast)
+
 ifdef CONFIG_LLVM_POLLY
 KBUILD_CFLAGS	+= $(call cc-option, -mllvm -polly) \
 		   $(call cc-option, -mllvm -polly-run-dce) \
