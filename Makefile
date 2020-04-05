@@ -657,8 +657,6 @@ KBUILD_CFLAGS	+= $(call cc-option, -mllvm -polly) \
 		   $(call cc-option, -mllvm -polly-vectorizer=stripmine) \
 		   $(call cc-option, -mllvm -polly-invariant-load-hoisting)
 endif
-else
-KBUILD_CFLAGS	+= -O2
 endif
 endif
 
