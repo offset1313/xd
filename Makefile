@@ -643,8 +643,6 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, attribute-alias)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= $(call cc-option,-Oz,-Os)
 else
-
-KBUILD_CFLAGS	+= -O3 -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS	+= -O3 $(call cc-option,-fsanitize=local-init) -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53
 ifdef CONFIG_LLVM_POLLY
@@ -657,6 +655,8 @@ KBUILD_CFLAGS	+= $(call cc-option, -mllvm -polly) \
 		   $(call cc-option, -mllvm -polly-vectorizer=stripmine) \
 		   $(call cc-option, -mllvm -polly-invariant-load-hoisting)
 endif
+else
+KBUILD_CFLAGS	+= -O3 -march=armv8-a -mtune=cortex-a53 -mcpu=cortex-a53
 endif
 endif
 
