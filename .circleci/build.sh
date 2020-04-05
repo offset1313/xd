@@ -3,10 +3,10 @@
 # Toolchains
     # 0 = linaro gcc
     # 1 = clang 10
-    # 2 = clang 11
+    # 2 = clang Latest
     
 # Compiler switch
-TC=0
+TC=2
 
 cd /
 
@@ -41,7 +41,7 @@ elif [ "$TC" == "1" ] ;
 elif [ "$TC" == "2" ] ;
     then
         TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
-        git clone --depth 1 https://github.com/offset1313/clang -b clang11 pclang
+        git clone --depth 1 https://github.com/kdrag0n/proton-clang.git pclang
         export CLANG_PATH=/pclang/bin
         export PATH=${CLANG_PATH}:${PATH}
         export LD_LIBRARY_PATH="/pclang/bin/../lib:$PATH"
