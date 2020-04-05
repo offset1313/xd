@@ -6,7 +6,7 @@
     # 2 = clang 11
     
 # Compiler switch
-TC=2
+TC=0
 
 cd /
 
