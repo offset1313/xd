@@ -29,28 +29,28 @@ export ARCH=arm64
 #Gcc
 if [ "$TC" == "0" ] ;
 	then 
-	    TOOL_VERSION=$(wahoo/out/include/generated/compile.h | grep LINUX_COMPILER | cut -d '"' -f2)
 		git clone --depth 1 https://github.com/offset1313/gcc  -b linaro gcc
+		TOOL_VERSION=$(wahoo/out/include/generated/compile.h | grep LINUX_COMPILER | cut -d '"' -f2)
 		export CROSS_COMPILE=/gcc/bin/aarch64-linux-gnu-
 		#CROSS_COMPILE_ARM32=arm-linux-gnueabi- 
 		
 #Clang 10
 elif [ "$TC" == "1" ] ;
     then
-        TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
-        git clone --depth 1 https://github.com/offset1313/clang  -b master pclang
-        export CLANG_PATH=/pclang/bin
-        export PATH=${CLANG_PATH}:${PATH}
-        export LD_LIBRARY_PATH="/pclang/bin/../lib:$PATH"
+		git clone --depth 1 https://github.com/offset1313/clang  -b master pclang
+		TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+		export CLANG_PATH=/pclang/bin
+		export PATH=${CLANG_PATH}:${PATH}
+		export LD_LIBRARY_PATH="/pclang/bin/../lib:$PATH"
         
 #Clang 11
 elif [ "$TC" == "2" ] ;
     then
-        TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
-        git clone --depth 1 https://github.com/kdrag0n/proton-clang.git pclang
-        export CLANG_PATH=/pclang/bin
-        export PATH=${CLANG_PATH}:${PATH}
-        export LD_LIBRARY_PATH="/pclang/bin/../lib:$PATH"
+		git clone --depth 1 https://github.com/kdrag0n/proton-clang.git pclang
+		TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+		export CLANG_PATH=/pclang/bin
+		export PATH=${CLANG_PATH}:${PATH}
+		export LD_LIBRARY_PATH="/pclang/bin/../lib:$PATH"
 fi
 
 function sendInfo() 
