@@ -109,7 +109,7 @@ if [ "$TC" == "0" ] ;
 		
 		if [ "$DS" == "0" ] ;
 			then 
-				make ARCH=arm64 mido_lessdbg O=out 
+				make ARCH=arm64 mido-less_defconfig O=out 
 		fi		
 		make ARCH=arm64 mido_defconfig O=out
 		make O=out -j16 &> /build.log 
@@ -123,7 +123,7 @@ if [ "$TC" == "1" ] || [ "$TC" == "2" ] ;
 		
 		if [ "$DS" == "0" ] ;
 			then 
-				make ARCH=arm64 mido_lessdbg O=out 
+				make ARCH=arm64 mido-less_defconfig O=out 
 		fi	
 		
 		make ARCH=arm64 mido_defconfig O=out
