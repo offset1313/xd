@@ -7,7 +7,7 @@
     
 # Compiler switch
 
-TC=0
+TC=1
 
 # Debug Kernel & Less Debugging Switch
 	# set DS=0 for Less Debugging Build ( Might have +ve impact on performance )
