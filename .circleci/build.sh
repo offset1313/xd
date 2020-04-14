@@ -11,7 +11,7 @@ TC=2
 cd /
 
 #Fetch sources
-git clone --depth 1 https://github.com/offset1313/Dess wahoo
+git clone --depth 1 https://github.com/offset1313/xd wahoo
 git clone --depth 1 git://github.com/CurioussX13/AnyKernel3 -b mido ak3
 
 # Set Build Env
