@@ -12,7 +12,7 @@ TC=2
 # Debug Kernel & Less Debugging Switch
 	# 0 = Less Debugging Build ( Might have +ve impact on performance )
 	# 1 = Debug Build
-DS=1
+DS=0
 
 cd /
 
