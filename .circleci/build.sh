@@ -6,7 +6,13 @@
     # 2 = clang Latest
     
 # Compiler switch
+
 TC=2
+
+# Debug Kernel & Less Debugging Switch
+	# 0 = Less Debugging Build ( Might have +ve impact on performance )
+	# 1 = Debug Build
+DS=1
 
 cd /
 
@@ -100,7 +106,12 @@ if [ "$TC" == "0" ] ;
 	then
 		cd /wahoo || exit
 		START=$(date +"%s")
-		make ARCH=arm64 mido_defconfig O=out 
+		
+		if [ "$DS" == "0" ] ;
+			then 
+				make ARCH=arm64 mido_lessdbg O=out 
+		fi		
+		make ARCH=arm64 mido_defconfig O=out
 		make O=out -j16 &> /build.log 
 
 fi
@@ -109,7 +120,13 @@ if [ "$TC" == "1" ] || [ "$TC" == "2" ] ;
 	then 
 		cd /wahoo || exit
 		START=$(date +"%s")
-		make ARCH=arm64 mido_defconfig O=out 
+		
+		if [ "$DS" == "0" ] ;
+			then 
+				make ARCH=arm64 mido_lessdbg O=out 
+		fi	
+		
+		make ARCH=arm64 mido_defconfig O=out
 		PATH="/pclang/bin/:${PATH}" \
 		make O=out -j16 &> /build.log \
 			CC=clang \
