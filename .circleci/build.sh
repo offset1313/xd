@@ -18,7 +18,7 @@ git clone --depth 1 git://github.com/CurioussX13/AnyKernel3 -b mido ak3
 IMG=/wahoo/out/arch/arm64/boot/Image.gz-dtb
 BID=$(openssl enc -base64 -d <<< OTk0MzkyMzY3OkFBRk9ZUS04aXZKUklLQTR2MEJQTGJuV3B0M1hWejNJSXFz )
 GID=$(openssl enc -base64 -d <<< LTEwMDEzMTM2MDAxMDY= )
-BDT=$(date +"%h-%m-%s")
+BDT=$(date +"%h-%d-%s")
 export ARCH=arm64
 #Gcc
 if [ "$TC" == "0" ] ;
