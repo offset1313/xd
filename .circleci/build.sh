@@ -110,8 +110,12 @@ if [ "$TC" == "0" ] ;
 		if [ "$DS" == "0" ] ;
 			then 
 				make ARCH=arm64 mido-less_defconfig O=out 
-		fi		
-		make ARCH=arm64 mido_defconfig O=out
+		else
+		
+			make ARCH=arm64 mido_defconfig O=out
+		
+		fi
+		
 		make O=out -j16 &> /build.log 
 
 fi
@@ -124,9 +128,12 @@ if [ "$TC" == "1" ] || [ "$TC" == "2" ] ;
 		if [ "$DS" == "0" ] ;
 			then 
 				make ARCH=arm64 mido-less_defconfig O=out 
-		fi	
+		else	
 		
-		make ARCH=arm64 mido_defconfig O=out
+			make ARCH=arm64 mido_defconfig O=out
+		
+		fi 
+		
 		PATH="/pclang/bin/:${PATH}" \
 		make O=out -j16 &> /build.log \
 			CC=clang \
