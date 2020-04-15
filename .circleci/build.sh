@@ -29,6 +29,7 @@ export ARCH=arm64
 #Gcc
 if [ "$TC" == "0" ] ;
 	then 
+		echo gcc
 		git clone --depth 1 https://github.com/offset1313/gcc  -b linaro gcc
 		TOOL_VERSION=$(wahoo/out/include/generated/compile.h | grep LINUX_COMPILER | cut -d '"' -f2)
 		export CROSS_COMPILE=/gcc/bin/aarch64-linux-gnu-
@@ -37,6 +38,7 @@ if [ "$TC" == "0" ] ;
 #Clang 10
 elif [ "$TC" == "1" ] ;
     then
+		echo clang10
 		git clone --depth 1 https://github.com/offset1313/clang  -b master pclang
 		TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
 		export CLANG_PATH=/pclang/bin
@@ -46,6 +48,7 @@ elif [ "$TC" == "1" ] ;
 #Clang 11
 elif [ "$TC" == "2" ] ;
     then
+    		echo clang11
 		git clone --depth 1 https://github.com/kdrag0n/proton-clang.git pclang
 		TOOL_VERSION=$("/pclang/bin/clang" --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
 		export CLANG_PATH=/pclang/bin
@@ -109,9 +112,10 @@ if [ "$TC" == "0" ] ;
 		
 		if [ "$DS" == "0" ] ;
 			then 
+			
 				make ARCH=arm64 mido-less_defconfig O=out 
 		else
-			exit
+			
 			make ARCH=arm64 mido_defconfig O=out
 		
 		fi
@@ -126,10 +130,11 @@ if [ "$TC" == "1" ] || [ "$TC" == "2" ] ;
 		START=$(date +"%s")
 		
 		if [ "$DS" == "0" ] ;
-			then 
+			then    
+				echo lessdef
 				make ARCH=arm64 mido-less_defconfig O=out 
 		else	
-			exit
+			echo midodef
 			make ARCH=arm64 mido_defconfig O=out
 		
 		fi 
