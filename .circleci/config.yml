@@ -1,0 +1,33 @@
+version: 2.1
+
+jobs:
+
+  compile:
+
+   docker:
+
+      - image: ubuntu:19.10
+
+   steps:
+
+      - run:
+
+          command: |
+
+           apt -y update && apt -y install bc build-essential zip curl git wget python
+
+           wget -O build.sh https://raw.githubusercontent.com/offset1313/xd/dev/.circleci/build.sh
+
+           chmod a+x build.sh
+
+           bash build.sh
+
+workflows:
+
+  version: 2.1
+
+  cooking:
+
+    jobs:
+
+      - compile
