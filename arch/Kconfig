@@ -424,7 +424,8 @@ config LD_DEAD_CODE_DATA_ELIMINATION
 	  must also merge .text.*, .data.*, and .bss.* correctly into
 	  output sections.
 config LTO
-	def_bool n
+	bool
+	default y
 
 config ARCH_SUPPORTS_LTO_CLANG
 	bool
