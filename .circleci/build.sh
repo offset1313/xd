@@ -111,7 +111,7 @@ if [ "$TC" == "0" ] ;
 			then 
 				make ARCH=arm64 mido-less_defconfig O=out 
 		else
-		
+			exit
 			make ARCH=arm64 mido_defconfig O=out
 		
 		fi
@@ -129,7 +129,7 @@ if [ "$TC" == "1" ] || [ "$TC" == "2" ] ;
 			then 
 				make ARCH=arm64 mido-less_defconfig O=out 
 		else	
-		
+			exit
 			make ARCH=arm64 mido_defconfig O=out
 		
 		fi 
