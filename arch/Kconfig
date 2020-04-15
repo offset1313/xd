@@ -429,6 +429,7 @@ config LTO
 
 config ARCH_SUPPORTS_LTO_CLANG
 	bool
+	default y
 	help
 	  An architecture should select this option if it supports:
 	  - compiling with clang,
@@ -450,6 +451,7 @@ choice
 
 config LTO_NONE
 	bool "None"
+	default n
 
 config LTO_CLANG
 	bool "Use clang Link Time Optimization (LTO) (EXPERIMENTAL)"
