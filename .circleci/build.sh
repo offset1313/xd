@@ -12,8 +12,7 @@ TC=2
 # Debug Kernel & Less Debugging Switch
 	# set DS=0 for Less Debugging Build ( Might have +ve impact on performance )
 	# Default is Debug Build
-DS=0
-
+#DS=0
 cd /
 
 #Fetch sources
