@@ -451,7 +451,6 @@ choice
 
 config LTO_NONE
 	bool "None"
-	default n
 
 config LTO_CLANG
 	bool "Use clang Link Time Optimization (LTO) (EXPERIMENTAL)"
